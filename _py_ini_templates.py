@@ -71,16 +71,18 @@ class UnauthorizedError(HTTPException):
 """
 
 
-conf_sqlite_pyseto: str = """from pyseto import Key, KeyInterface
-from sqlite3 import Connection, connect
+from secrets import token_bytes
+conf_sqlite_pyseto: str = f"""from sqlite3 import Connection, connect
+
+
+from pyseto import Key, KeyInterface
 
 
 PASITA: KeyInterface = Key.new(
-    key='',
+    key=b'{ token_bytes(nbytes=32) }',
     purpose='local',
     version=4,
 )
-
 
 
 def create_pool() -> Connection:
