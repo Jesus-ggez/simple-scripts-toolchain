@@ -1,55 +1,43 @@
-import os
-
-
 from typing import Callable
 
 
 from _ts_ini_templates import counter_model, counter_component, counter_style
+from utils import (
+    __create_dir_and_enter,
+    __create_file_and_exit,
+    __create_file,
+    __create_dir,
+    __move_back,
+    __move_to,
+    __exec,
+)
 
 
-__move_to: Callable = os.chdir
-__exec: Callable = os.system
-__create_dir: Callable = os.mkdir
+def _create_fold_structure() -> None:
+    __create_dir_and_enter(name='src')
 
-
-def __create_and_move_back(name: str, content: str, move_to: str) -> None:
-    __move_to(move_to)
-    with open(name, 'w') as item:
-        item.write(content)
-    __move_to('..')
-
-
-def _fill_fold_struct() -> None:
-    __move_to('src')
-
-    __create_and_move_back(
+    # src/components
+    __create_dir_and_enter(name='components')
+    __create_file_and_exit(
         content=counter_component,
-        move_to='components',
         name='xCounter.ts',
     )
 
-    __create_and_move_back(
+    # src/models
+    __create_dir_and_enter(name='models')
+    __create_file_and_exit(
         content=counter_model,
         name='counter.ts',
-        move_to='models',
     )
 
-    __create_and_move_back(
+    # src/styles
+    __create_dir_and_enter(name='styles')
+    __create_file_and_exit(
         content=counter_style,
         name='counter.css',
-        move_to='styles',
     )
-    __move_to('..')
 
-
-def _alloc_index_in_root() -> None:
-    __move_to('src')
-    __exec('mv index.css ..')
-    __move_to('..')
-
-
-def _clean_src() -> None:
-    __exec('rm -r src/*')
+    __move_back()
 
 
 def _create_main_ts() -> None:
@@ -65,16 +53,6 @@ def _create_main_ts() -> None:
     ]
     with open('main.ts', 'w') as main_ts:
         main_ts.writelines(t + '\n' for t in template)
-
-
-def _create_fold_structure() -> None:
-    __move_to('src')
-
-    __create_dir('components')
-    __create_dir('models')
-    __create_dir('styles')
-
-    __move_to('..')
 
 
 def _fmt_index_html() -> None:
@@ -109,11 +87,19 @@ def _fmt_index_html() -> None:
         index.writelines(old_doc)
 
 
+def _alloc_index_in_root() -> None:
+    __exec('mv src/index.css .')
+
+
+def _clean_src() -> None:
+    __exec('rm -r src')
+
+
+
 def main() -> None:
     _alloc_index_in_root()
     _clean_src()
     _create_fold_structure()
-    _fill_fold_struct()
     _create_main_ts()
     _fmt_index_html()
 
