@@ -79,7 +79,7 @@ from pyseto import Key, KeyInterface
 
 
 PASITA: KeyInterface = Key.new(
-    key=b'{ token_bytes(nbytes=32) }',
+    key={ token_bytes(nbytes=32) },
     purpose='local',
     version=4,
 )
