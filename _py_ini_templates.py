@@ -101,20 +101,30 @@ def create_tables() -> None:
 
 
 smart_object_token: str = """from typing import Optional, Self
+import json
 
 
 from pydantic import BaseModel, ValidationError
-from pyseto import encode
+from pyseto import encode, decode
+from fastapi import Security
+from fastapi.security import (
+    HTTPAuthorizationCredentials as AuthCredentials,
+    HTTPBearer,
+)
 
 
 from .errs import (
     InvalidTokenPayload,
     InternalServerError,
     InvalidTokenType,
+    TokenNotFound,
 )
 
 
 import config
+
+
+sec: HTTPBearer = HTTPBearer()
 
 
 class SmartToken(BaseModel):
@@ -142,55 +152,15 @@ class SmartToken(BaseModel):
 
         except Exception as e:
             if isinstance(e, ValidationError):
-                raise InvalidTokenType(
-                    trace=str(e),
-                )
-
+                raise InvalidTokenType( trace=str(e) )
             raise InvalidTokenPayload()
 
-"""
 
-
-token_extractor: str = """from typing import Callable
-import json
-
-
-from fastapi import Security
-from pyseto import decode
-from fastapi.security import (
-    HTTPAuthorizationCredentials as AuthCredentials,
-    HTTPBearer,
-)
-
-
-from .errs import TokenNotFound
-from .token_so import SmartToken
-import config
-
-
-sec: HTTPBearer = HTTPBearer()
-
-
-def token_extractor(
-    token: type[SmartToken],
-) -> Callable[[AuthCredentials], SmartToken]:
-    \"\"\"
-    Use:
-
-    @router.method('/')
-    def sampled(
-        form: Form,
-        pool: Connection = Depends(dependency=create_pool),
-        token: TokenType = Depends(
-            dependency=token_extractor(TokenType),
-        ),
-    ) -> dict:
-        credential: TokenType = token # only use
-    \"\"\"
+    @classmethod
     def extractor(
+        cls,
         credentials: AuthCredentials = Security(dependency=sec),
-    ) -> SmartToken:
-
+    ) -> Self:
         if not ( bearer := credentials.credentials ):
             raise TokenNotFound()
 
@@ -200,6 +170,6 @@ def token_extractor(
             token=bearer,
         ).payload # type: ignore
 
-        return token.from_dict(**data)
-    return extractor # callback
+        return cls.from_dict(data=data)
 """
+
