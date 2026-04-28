@@ -16,7 +16,8 @@ def main() -> None:
 
         __create_file(name='exc.py', content=exc)
 
-        __create_file_and_exit(name='__init__.py', content=init_router)
+        ctt: str = init_router.replace('__name__', router_name)
+        __create_file_and_exit(name='__init__.py', content=ctt)
 
 
 if __name__ == '__main__':

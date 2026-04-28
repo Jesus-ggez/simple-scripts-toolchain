@@ -12,6 +12,11 @@ from utils import (
 )
 
 
+def __create_security() -> None:
+    __create_dir_and_enter(name='security')
+    __create_file_and_exit(name='core.py', content='')
+
+
 def __create_tools_package() -> None:
     __create_dir_and_enter(name='tools')
 
@@ -38,6 +43,7 @@ def __create_api_package() -> None:
 
 def main() -> None:
     # remove security for simplification fold-struct
+    __create_security()
     __create_tools_package()
     __create_root_files()
 
