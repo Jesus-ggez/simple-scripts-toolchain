@@ -1,6 +1,27 @@
 from secrets import token_bytes
 
 
+schema_core: str = """def create_table(name: str, cols: list[dict]) -> str:
+    return (
+        'CREATE TABLE IF NOT EXISTS ' + name + ' (\\n' +
+        ',\\n'.join(f'  {col}' for col in cols) +
+        '\\n)'
+    )
+
+
+def create_fk(name: str, col_ref: str, table_ref: str) -> str:
+    return f'{ name } TEXT REFERENCES { table_ref }({ col_ref })'
+"""
+
+schema_shared: str = """from typing import Final
+
+
+# this field is for unix standar
+CREATED_AT: Final[str] = 'created_at INTEGER NOT NULL'
+IDEN: Final[str] = 'id TEXT NOT NULL PRIMARY KEY'
+"""
+
+
 argon_content: str = """from nacl.pwhash import argon2id
 
 
@@ -19,7 +40,7 @@ def try_compare_hash(value: str, hashed: str) -> None:
 main_fastapi: str = """from fastapi import FastAPI
 
 
-# from api._ import router as Router
+# from api. import router as Router
 
 
 app: FastAPI = FastAPI()
@@ -43,10 +64,22 @@ if __name__ == '__main__':
     )
 """
 
-conf_sqlite_pyseto: str = f"""from sqlite3 import Connection, connect
+dotenv: str = f"""
+BEARER_TOKEN_KEY=\"{ token_bytes(nbytes=32) }\"
+"""
+
+conf_sqlite_pyseto: str = """from sqlite3 import Connection, connect
+from os import environ as varenv
 
 
 from pyseto import Key, KeyInterface
+
+
+def __get_varenv(name: str) -> str:
+    if var := varenv.get(name):
+        return var
+
+    raise NotImplementedError('any varenv doesnt exists or not implemented')
 
 
 def __create_key(bkey: bytes) -> KeyInterface:
@@ -56,8 +89,9 @@ def __create_key(bkey: bytes) -> KeyInterface:
         key=bkey,
     )
 
+
 # simple tokens
-PASITA: KeyInterface = __create_key(bkey={ token_bytes(nbytes=32) })
+PASITA: KeyInterface = __create_key(bkey=__get_varenv(name='BEARER_TOKEN_KEY').encode())
 
 
 def create_pool() -> Connection:
@@ -88,11 +122,13 @@ def unix_now() -> int:
 
 exc: str = """from fastapi import HTTPException, status
 
-class (HTTPException):
-    def __init__(self) -> None:
+class InternalServerExc(HTTPException):
+    def __init__(self, trace: str) -> None:
+        print('trace: ', trace)
+
         super().__init__(
-            status_code=status.,
-            detail='',
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail='internal server error',
         )
 """
 

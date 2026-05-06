@@ -1,7 +1,10 @@
 from _py_fastapi_init import (
     conf_sqlite_pyseto,
+    schema_shared,
     argon_content,
     main_fastapi,
+    schema_core,
+    dotenv,
     exc,
 )
 from utils import (
@@ -34,6 +37,13 @@ def __create_tools_package() -> None:
 def __create_root_files() -> None:
     __create_file(name='config.py', content=conf_sqlite_pyseto)
     __create_file(name='main.py', content=main_fastapi)
+    __create_file(name='.env', content=dotenv)
+
+
+def __create_schema_package() -> None:
+    __create_dir_and_enter(name='schemas')
+    __create_file(name='shared.py', content=schema_shared)
+    __create_file_and_exit(name='core.py', content=schema_core)
 
 
 def __create_api_package() -> None:
@@ -43,6 +53,7 @@ def __create_api_package() -> None:
 
 def main() -> None:
     # remove security for simplification fold-struct
+    __create_schema_package()
     __create_security()
     __create_tools_package()
     __create_root_files()
