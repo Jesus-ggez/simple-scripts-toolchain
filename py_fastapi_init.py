@@ -4,6 +4,8 @@ from _py_fastapi_init import (
     argon_content,
     main_fastapi,
     schema_core,
+    unix_time,
+    gitignore,
     dotenv,
     exc,
 )
@@ -29,13 +31,14 @@ def __create_tools_package() -> None:
 
     # tools/time
     __create_dir_and_enter(name='date')
-    __create_file_and_exit(name='unix.py', content='')
+    __create_file_and_exit(name='unix.py', content=unix_time)
 
     __move_back() # exit to tools
 
 
 def __create_root_files() -> None:
     __create_file(name='config.py', content=conf_sqlite_pyseto)
+    __create_file(name='.gitignore', content=gitignore)
     __create_file(name='main.py', content=main_fastapi)
     __create_file(name='.env', content=dotenv)
 
@@ -51,9 +54,15 @@ def __create_api_package() -> None:
     __create_file_and_exit(name='exc.py', content=exc)
 
 
+def __create_models_package() -> None:
+    __create_dir_and_enter(name='models')
+    __move_back()
+
+
 def main() -> None:
     # remove security for simplification fold-struct
     __create_schema_package()
+    __create_models_package()
     __create_security()
     __create_tools_package()
     __create_root_files()

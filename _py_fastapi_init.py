@@ -1,10 +1,15 @@
+from base64 import b64encode as encode
 from secrets import token_bytes
 
 
-schema_core: str = """def create_table(name: str, cols: list[dict]) -> str:
+gitignore: str = """.env
+"""
+
+
+schema_core: str = """def create_table(name: str, cols: list[str]) -> str:
     return (
         'CREATE TABLE IF NOT EXISTS ' + name + ' (\\n' +
-        ',\\n'.join(f'  {col}' for col in cols) +
+        ',\\n'.join(f'    {col}' for col in cols) +
         '\\n)'
     )
 
@@ -36,8 +41,11 @@ def try_compare_hash(value: str, hashed: str) -> None:
     )
 #"""
 
-
 main_fastapi: str = """from fastapi import FastAPI
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 
 # from api. import router as Router
@@ -53,6 +61,9 @@ def main() -> None:
 
 
 if __name__ == '__main__':
+    from config import create_tables
+
+    create_tables()
     main()
 
     from uvicorn import run
@@ -64,8 +75,12 @@ if __name__ == '__main__':
     )
 """
 
+create_new_token_bytes = lambda: token_bytes(
+    nbytes=32,
+)
+
 dotenv: str = f"""
-BEARER_TOKEN_KEY=\"{ token_bytes(nbytes=32) }\"
+BEARER_TOKEN_KEY=\"{ encode(create_new_token_bytes()).decode() }\"
 """
 
 conf_sqlite_pyseto: str = """from sqlite3 import Connection, connect
@@ -99,9 +114,11 @@ def create_pool() -> Connection:
 
 
 def create_tables() -> None:
+    # from schemas import *
+
     _pool: Connection = create_pool()
-    for table in [
-    ]:
+    for table in (
+    ):
         _pool.execute(table)
         _pool.commit()
 
