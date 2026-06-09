@@ -4,6 +4,7 @@ import os
 
 argv.pop(0)
 
+
 def countlines(ruta) -> int:
     total = 0
 
@@ -17,6 +18,7 @@ def countlines(ruta) -> int:
 
         elif entry.is_dir():
             total += countlines(entry.path)
+
     return total
 
 

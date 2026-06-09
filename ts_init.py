@@ -1,14 +1,12 @@
 from typing import Callable
 
 
-from _ts_ini_templates import counter_model, counter_component, counter_style
+from templates._ts_ini_templates import counter_model, counter_component, counter_style
 from utils import (
     __create_dir_and_enter,
     __create_file_and_exit,
-    __create_file,
-    __create_dir,
     __move_back,
-    __move_to,
+    __main__,
     __exec,
 )
 
@@ -96,13 +94,10 @@ def _clean_src() -> None:
 
 
 
+@__main__
 def main() -> None:
     _alloc_index_in_root()
     _clean_src()
     _create_fold_structure()
     _create_main_ts()
     _fmt_index_html()
-
-
-if __name__ == '__main__':
-    main()

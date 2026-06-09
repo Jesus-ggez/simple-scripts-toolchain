@@ -1,17 +1,20 @@
 from sys import argv as term_args
 
 
-from utils import (
-    __create_file_and_exit,
-    __move_to,
-)
-from _ts_pkg_lit_component import (
+from templates._ts_pkg_lit_component import (
     component_template,
     model_template,
     css_template,
 )
 
+from utils import (
+    __create_file_and_exit,
+    __move_to,
+    __main__,
+)
 
+
+@__main__
 def main() -> None:
     for component_name in term_args[1:]:
         # src/components
@@ -34,7 +37,3 @@ def main() -> None:
             name=component_name + '.css',
             content=css_template,
         )
-
-
-if __name__ == '__main__':
-    main()
