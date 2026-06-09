@@ -5,6 +5,8 @@ while True:
     data.append(
         ctt
         .replace('/data/data/com.termux/files', '')
+        .replace('Android', 'BSD')
+        .replace('android', 'bsd')
         .strip()
     )
 

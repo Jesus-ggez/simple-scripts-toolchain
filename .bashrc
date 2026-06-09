@@ -104,7 +104,10 @@ alias rsrun="cargo run"
 alias rsnew="cargo new"
 
 # postgresql
-alias pgini="python ~/.toolchain/scripts/pg_init.py"
+alias pgi__ni="python ~/.toolchain/scripts/pg_init.py"
+alias pg__job="pg_ctl status -D ~/._labs"
+alias pg__stop="pg_ctl stop -D ~/._labs"
+alias pg__reset="delpy ~/._labs"
 
 
 export ANDROID_API_LEVEL=$(getprop ro.build.version.sdk)
