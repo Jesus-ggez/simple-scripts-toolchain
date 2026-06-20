@@ -17,6 +17,7 @@ alias kill_proc="kill -9 PID"
 
 alias tool="vim ~/.bashrc"
 alias viconf="vim ~/.vim/"
+alias vicoc="vim ~/.vim/coc-settings.json"
 
 alias pkgls="pkg list-installed"
 alias pkgu="pkg uninstall"
@@ -28,6 +29,9 @@ alias del="rm -rf"
 
 alias xx="exit"
 
+alias "........"="cd ../../../../../../.."
+alias "......."="cd ../../../../../.."
+alias "......"="cd ../../../../.."
 alias "....."="cd ../../../.."
 alias "...."="cd ../../.."
 alias "..."="cd ../.."
@@ -39,6 +43,7 @@ alias gols="go run main.go"
 
 
 # java
+alias mkjavmod="python ~/.toolchain/py_java.py"
 alias javrun="./mvnw spring-boot:run"
 
 
@@ -48,7 +53,7 @@ alias tc="cd ~/.toolchain"
 
 alias pyinibackend="python ~/.toolchain/py_backend.py"
 alias tslitcomp="python ~/.toolchain/ts_pkg_lit_component.py"
-alias tsini="python ~/.toolchain/ts_init.py"
+alias littsini="python ~/.toolchain/lit_ts_init.py"
 
 alias mkpyrouter="python ~/.toolchain/py_pkg_router.py"
 alias mkpymod="python ~/.toolchain/py_module_init.py"
@@ -67,6 +72,10 @@ alias togh="git push -u origin"
 alias topr="git push origin"
 alias ghnew="git checkout -b"
 
+alias ghmove="git switch"
+alias ghls="git branch -a"
+alias ghmoveroot="git switch master"
+
 # python
 alias testpy="pytest -v --color=yes --code-highlight=yes"
 alias active="source ./.venv/bin/activate"
@@ -75,7 +84,7 @@ alias _pyapi="python3 -m http.server"
 alias pinr="pip install -r req.txt"
 alias pyls="cls && python main.py"
 alias pycheck="pyrefly check"
-alias nenv="python3.11 -m venv .venv"
+alias nenv="python3.13 -m venv .venv"
 alias pyrun="python main.py"
 alias pyapp="python app.py"
 alias pun="pip uninstall"
@@ -104,7 +113,7 @@ alias rsrun="cargo run"
 alias rsnew="cargo new"
 
 # postgresql
-alias pgi__ni="python ~/.toolchain/scripts/pg_init.py"
+alias pg__ini="python ~/.toolchain/scripts/pg_init.py"
 alias pg__job="pg_ctl status -D ~/._labs"
 alias pg__stop="pg_ctl stop -D ~/._labs"
 alias pg__reset="delpy ~/._labs"
