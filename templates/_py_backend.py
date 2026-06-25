@@ -2,6 +2,8 @@ template_dot_gitignore: str = """.env
 """
 
 template_dot_env: str = """
+HOST="0.0.0.0"
+PORT=4000
 """
 
 template_main: str = """
@@ -24,11 +26,12 @@ def __get_varenv(name: str) -> str:
 """
 
 
-template_app: str = """from fastapi import FastAPI
+template_app: str = """from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI
 from uvicorn import run
 
 
-from config import __get_varenv
+from config import __get_varenv # type: ignore
 # from api.__ import ___ as Router
 
 
@@ -45,11 +48,20 @@ def __run_serve(app: Application) -> None:
 
 def create_app(app: Application) -> None:
     # app.include_router(router=Router)
-    ...
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_credentials=True,
+        allow_origins=['*'],
+        allow_methods=['*'],
+        allow_headers=['*'],
+    )
 
 
 def app() -> Application:
-    app: Application = FastAPI()
+    app: Application = FastAPI(
+        root_path='/api'
+    )
 
     return app
 """

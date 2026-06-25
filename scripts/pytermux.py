@@ -1,4 +1,8 @@
+from os import system
+
+
 data: list[str] = []
+
 
 while True:
     ctt: str = input('')
@@ -11,6 +15,7 @@ while True:
     )
 
     if '.?' in ctt:
+        system('clear')
         for line in data:
             print(line)
         break
