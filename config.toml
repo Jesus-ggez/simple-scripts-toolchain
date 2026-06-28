@@ -1,0 +1,17 @@
+# En ~/.cargo/config.toml
+[build]
+rustflags = ["-C", "target-cpu=native"]
+
+[target.armv7-linux-androideabi]
+linker = "clang"
+rustflags = ["-C", "link-arg=-fuse-ld=mold"]
+
+[profile.dev]
+codegen-units = 1        # Mejor optimización (usa más núcleos)
+incremental = true
+# overflow-checks = false  # Quita en dev para velocidad
+
+[profile.release]
+codegen-units = 1        # Máxima optimización
+lto = true
+panic = "abort"          # Binarios más pequeños

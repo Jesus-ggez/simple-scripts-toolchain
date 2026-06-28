@@ -121,3 +121,10 @@ alias pg__reset="delpy ~/._labs"
 
 export ANDROID_API_LEVEL=$(getprop ro.build.version.sdk)
 export PATH=$HOME/.cargo/bin:$PATH
+# mb
+export RUST_ANALYZER_MEMORY_USAGE=4096
+export RUST_ANALYZER_WORKER_COUNT=8
+export CARGO_BUILD_JOBS=8
+export RUST_ANALYZER_CHECK_WORKSPACE="false"
+export RUSTC_WRAPPER=sccache
+

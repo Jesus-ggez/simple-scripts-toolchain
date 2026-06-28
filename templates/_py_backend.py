@@ -6,9 +6,27 @@ HOST="0.0.0.0"
 PORT=4000
 """
 
-template_main: str = """
+template_main: str = """from dotenv import load_dotenv
 
-def main() -> None: ...
+
+from app import (
+    Application,
+    __run_serve,
+    create_app,
+)
+
+
+load_dotenv()
+
+
+api: Application = Application()
+api.root_path = '/api'
+
+
+def main() -> None:
+    create_app(app=api)
+
+    __run_serve(app=api)
 
 
 if __name__ == '__main__':
@@ -27,15 +45,12 @@ def __get_varenv(name: str) -> str:
 
 
 template_app: str = """from fastapi.middleware.cors import CORSMiddleware
-from fastapi import FastAPI
+from fastapi import FastAPI as Application
 from uvicorn import run
 
 
 from config import __get_varenv # type: ignore
 # from api.__ import ___ as Router
-
-
-type Application = FastAPI
 
 
 def __run_serve(app: Application) -> None:
@@ -56,12 +71,4 @@ def create_app(app: Application) -> None:
         allow_methods=['*'],
         allow_headers=['*'],
     )
-
-
-def app() -> Application:
-    app: Application = FastAPI(
-        root_path='/api'
-    )
-
-    return app
 """
